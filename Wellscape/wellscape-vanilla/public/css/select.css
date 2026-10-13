@@ -1,0 +1,136 @@
+.select-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 24px 16px 40px;
+  background: radial-gradient(ellipse at top, #1e3a2f, #0d1b15 80%);
+  color: #f0fdf4;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.select-header {
+  text-align: center;
+  max-width: 640px;
+  margin-bottom: 20px;
+}
+
+.select-header h1 {
+  margin: 0 0 6px;
+  font-size: clamp(22px, 5vw, 30px);
+  color: #6ee7b7;
+  font-weight: 700;
+}
+
+.select-header p {
+  margin: 0;
+  font-size: 14px;
+  color: #a7f3d0;
+  opacity: 0.85;
+}
+
+.select-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 12px;
+  width: 100%;
+  max-width: 720px;
+  margin-bottom: 100px;
+}
+
+.char-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 4px 8px;
+  background: rgba(16, 44, 32, 0.6);
+  border: 2px solid rgba(52, 211, 153, 0.15);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+}
+
+.char-card:hover {
+  transform: translateY(-3px);
+  background: rgba(16, 44, 32, 0.9);
+  border-color: rgba(110, 231, 183, 0.5);
+}
+
+.char-card.selected {
+  border-color: #34d399;
+  background: rgba(5, 150, 105, 0.3);
+  box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.3);
+}
+
+/* The character preview shows only the top-left (down-facing) 20x32 frame.
+   Sheet is 60x128 (3 cols x 4 rows). Scaled 2x -> frame shown at 40x64,
+   full sheet background sized to 120x256. */
+.char-preview {
+  width: 40px;
+  height: 64px;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: 120px 256px;
+  image-rendering: pixelated;
+}
+
+.char-label {
+  font-size: 11px;
+  color: #d1fae5;
+  opacity: 0.75;
+}
+
+/* Fixed confirm bar at bottom */
+.select-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, rgba(5, 12, 9, 0.98), rgba(5, 12, 9, 0.75));
+  border-top: 1px solid rgba(52, 211, 153, 0.2);
+}
+
+.select-footer .chosen-label {
+  font-size: 13px;
+  color: #a7f3d0;
+}
+
+.select-confirm {
+  padding: 12px 28px;
+  border: 0;
+  border-radius: 10px;
+  background: #059669;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, opacity 0.15s ease;
+}
+
+.select-confirm:hover {
+  background: #047857;
+}
+
+.select-confirm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .select-grid {
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 8px;
+  }
+  .char-preview {
+    width: 36px;
+    height: 58px;
+    background-size: 108px 230px;
+  }
+}

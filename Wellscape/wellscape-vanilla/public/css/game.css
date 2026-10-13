@@ -1,0 +1,517 @@
+.game-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px;
+  padding: max(12px, env(safe-area-inset-top)) 16px
+    max(20px, env(safe-area-inset-bottom));
+  background: radial-gradient(ellipse at top, #1e3a2f, #0d1b15 80%);
+  min-height: 100vh;
+  min-height: 100dvh;
+  color: #f0fdf4;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* ---- Dev-only settings button (absolute, top-right of the game) ---- */
+.settings-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 30;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  background: rgba(16, 44, 32, 0.8);
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  border-radius: 10px;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: transform 0.15s ease, background 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.settings-toggle:hover {
+  background: rgba(16, 44, 32, 0.95);
+}
+
+.settings-toggle.active {
+  background: rgba(5, 150, 105, 0.85);
+  transform: rotate(45deg);
+}
+
+/* ---- Settings panel (absolute overlay, hidden by default via [hidden]) ---- */
+.settings-panel {
+  position: absolute;
+  top: 58px;
+  right: 10px;
+  z-index: 29;
+  width: min(340px, calc(100% - 20px));
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(16, 44, 32, 0.92);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(52, 211, 153, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  animation: viewFade 0.18s ease;
+}
+
+.settings-panel[hidden] {
+  display: none;
+}
+
+.settings-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.settings-panel .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.settings-panel .flag {
+  font-size: 20px;
+}
+
+.settings-panel h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #6ee7b7;
+}
+
+.settings-panel .subtitle {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: #a7f3d0;
+  opacity: 0.85;
+}
+
+.settings-close {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  color: #d1fae5;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.settings-close:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.game-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.game-actions button {
+  padding: 9px 12px;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.btn-sprite {
+  background: #334155;
+}
+
+.btn-sprite.active {
+  background: #059669;
+}
+
+.btn-reset {
+  background: #1e293b;
+  color: #cbd5e1;
+  border-color: rgba(255, 255, 255, 0.15);
+  font-weight: 400;
+}
+
+.btn-change {
+  background: #1d4ed8;
+}
+
+.btn-exit {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+/* ---- Canvas wrapper ----
+   The game always takes ~3/4 of the viewport HEIGHT so it stays the focus.
+   On wide screens we also hold a 4:3 shape; on phones we drop the strict
+   ratio and let the box fill the width (KAPLAY letterboxes the 800x600 world
+   inside, so there's never any distortion). */
+.canvas-wrap {
+  position: relative;
+  height: 75vh;
+  height: 75dvh;
+  aspect-ratio: 4 / 3;
+  max-width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(52, 211, 153, 0.3);
+  background: #000;
+  touch-action: none; /* prevent page scroll while using the D-pad */
+}
+
+/* Phone / narrow screens: keep the 3/4-height, fill the available width. */
+@media (max-aspect-ratio: 4 / 3) {
+  .canvas-wrap {
+    aspect-ratio: auto; /* release the 4:3 lock so height can win */
+    height: 75vh;
+    height: 75dvh;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Player-facing build (no editor header): center the game vertically. */
+.game-screen.player-mode {
+  justify-content: center;
+}
+
+.canvas-wrap canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+/* ---- Live HUD ---- */
+.hud {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(10, 24, 18, 0.85);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: clamp(10px, 2.6vw, 12px);
+  border: 1px solid rgba(110, 231, 183, 0.2);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-family: monospace;
+  max-width: calc(100% - 20px);
+  flex-wrap: wrap;
+}
+
+.hud .facing {
+  text-transform: uppercase;
+  color: #6ee7b7;
+}
+
+.hud .status-collide {
+  color: #f87171;
+  font-weight: bold;
+}
+
+.hud .status-walking {
+  color: #34d399;
+  font-weight: bold;
+}
+
+.hud .status-idle {
+  color: #94a3b8;
+}
+
+/* ---- Touch D-pad (hidden by default, shown on touch/coarse pointers) ---- */
+.touch-controls {
+  display: none;
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  user-select: none;
+}
+
+.dpad {
+  position: relative;
+  width: 150px;
+  height: 150px;
+}
+
+.dpad-btn {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  color: #e8fff4;
+  background: rgba(16, 44, 32, 0.72);
+  border: 1px solid rgba(110, 231, 183, 0.4);
+  border-radius: 12px;
+  cursor: pointer;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dpad-btn.pressed {
+  background: rgba(5, 150, 105, 0.85);
+  transform: scale(0.94);
+}
+
+.dpad-up {
+  top: 0;
+  left: 50px;
+}
+.dpad-left {
+  top: 50px;
+  left: 0;
+}
+.dpad-right {
+  top: 50px;
+  left: 100px;
+}
+.dpad-down {
+  top: 100px;
+  left: 50px;
+}
+
+/* Show the D-pad on touch-first devices (no fine pointer / hover). */
+@media (hover: none) and (pointer: coarse) {
+  .touch-controls {
+    display: block;
+  }
+}
+
+/* ---- Narrow screens ---- */
+@media (max-width: 720px) {
+  .game-screen {
+    gap: 12px;
+    padding: 10px 10px max(16px, env(safe-area-inset-bottom));
+  }
+  .dpad {
+    width: 132px;
+    height: 132px;
+  }
+  .dpad-btn {
+    width: 44px;
+    height: 44px;
+  }
+  .dpad-up {
+    left: 44px;
+  }
+  .dpad-left {
+    top: 44px;
+  }
+  .dpad-right {
+    top: 44px;
+    left: 88px;
+  }
+  .dpad-down {
+    top: 88px;
+    left: 44px;
+  }
+}
+
+/* ---- Circular interact button (appears when near an NPC) ---- */
+.interact-btn {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  z-index: 25;
+  width: 76px;
+  height: 76px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  background: radial-gradient(circle at 35% 30%, #22c55e, #15803d);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  -webkit-tap-highlight-color: transparent;
+  animation: interactPop 0.2s ease, interactPulse 1.6s ease-in-out infinite 0.2s;
+}
+
+.interact-btn[hidden] {
+  display: none;
+}
+
+.interact-btn.is-done {
+  background: radial-gradient(circle at 35% 30%, #38bdf8, #0369a1);
+  animation: interactPop 0.2s ease;
+}
+
+.interact-btn .interact-icon {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.interact-btn .interact-label {
+  font-size: 10px;
+  font-weight: 700;
+  max-width: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@keyframes interactPop {
+  from { transform: scale(0.6); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+@keyframes interactPulse {
+  0%, 100% { box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45), 0 0 0 0 rgba(34, 197, 94, 0.5); }
+  50%      { box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45), 0 0 0 10px rgba(34, 197, 94, 0); }
+}
+
+/* ---- Forced wellness task popup ---- */
+.task-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(5, 12, 9, 0.72);
+  backdrop-filter: blur(3px);
+  animation: viewFade 0.2s ease;
+}
+
+.task-card {
+  width: min(360px, 100%);
+  max-height: 100%;
+  overflow: auto;
+  text-align: center;
+  padding: 22px 20px 18px;
+  border-radius: 18px;
+  background: #fffefa;
+  color: #27392f;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  border: 1px solid #e7ebe2;
+}
+
+.task-card.task-done {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 0 3px rgba(52, 211, 153, 0.5);
+}
+
+.task-emoji {
+  font-size: 42px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.task-npc {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: #5c8060;
+}
+
+.task-card h2 {
+  margin: 4px 0 8px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 23px;
+  font-weight: 500;
+  color: #27392f;
+}
+
+.task-prompt {
+  margin: 0 0 10px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #59695d;
+}
+
+.task-hint {
+  margin: 0 0 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #4b7757;
+}
+
+.task-progress {
+  height: 10px;
+  border-radius: 999px;
+  background: #e7ebe2;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.task-progress-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #34d399, #059669);
+  transition: width 0.12s linear;
+}
+
+.task-action {
+  width: 100%;
+  min-height: 50px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 10px;
+  background: #5c8060;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s ease, transform 0.08s ease;
+}
+
+.task-action:hover {
+  background: #466f4d;
+}
+
+.task-action.holding {
+  background: #3e6747;
+  transform: scale(0.98);
+}
+
+.task-action:disabled {
+  opacity: 0.75;
+  cursor: default;
+}
+
+.task-locked {
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: #963c37;
+}
+
+@media (max-width: 720px) {
+  .interact-btn {
+    width: 66px;
+    height: 66px;
+    right: 14px;
+    bottom: 14px;
+  }
+  .interact-btn .interact-icon {
+    font-size: 22px;
+  }
+}

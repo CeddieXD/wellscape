@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0d1b15" />
+    <title>wellscape</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;650;700;750&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/index.css" />
+    <link rel="stylesheet" href="./css/auth.css" />
+    <link rel="stylesheet" href="./css/select.css" />
+    <link rel="stylesheet" href="./css/game.css" />
+    <link rel="stylesheet" href="./css/dashboard.css" />
+    <!-- Playfair Display for dashboard headings -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;650;700;750&family=Playfair+Display:ital,wght@1,500;1,600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root">
+      <!-- Views are rendered here by js/app.js -->
+    </div>
+
+    <!-- Chart.js for the dashboard analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <!-- KAPLAY game engine -->
+    <script src="https://unpkg.com/kaplay@3001.0.19/dist/kaplay.js"></script>
+    <script type="module" src="./js/app.js"></script>
+  </body>
+</html>

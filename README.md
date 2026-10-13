@@ -39,5 +39,10 @@ npm test
 ```
 
 ## Requirements
-## About the game engine
+## How was the game made?
+The game is made using the game engine Kaplay.js + Colyseus
+## How does Colyseus work?
+```
+Colyseus is a fully-featured open source multi-player framework. It’s versatile and scalable for any game genre. The key features we are going to take an advantage of are automatic state synchronization and creating a game room on demand. Having this ready out-of-the-box is a great initial help so you can focus on your game itself, instead of doing (basically a lot of) boilerplate work. All these concepts and more will be explained further. - Kaplay x Colyseus website 
+```
 

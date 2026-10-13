@@ -1,0 +1,13 @@
+{
+  "name": "wellscape-vanilla",
+  "version": "1.0.0",
+  "description": "Wellscape — a cozy wellness-themed top-down game (plain HTML/CSS/JS frontend + Node/Express backend).",
+  "type": "module",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node --watch server/server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

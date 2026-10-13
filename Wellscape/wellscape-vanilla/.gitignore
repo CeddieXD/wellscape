@@ -1,0 +1,7 @@
+node_modules/
+npm-debug.log*
+.env
+
+# Persisted auth store (contains hashed credentials — keep out of git)
+server/data/
+wellness/

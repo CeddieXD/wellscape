@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./auth.css";
 import { LockKeyhole, Mail, Waves } from "lucide-react";
 import { api } from "./api";
 import type { AuthSession } from "./types";

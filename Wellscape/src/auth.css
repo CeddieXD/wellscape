@@ -1,0 +1,32 @@
+.auth-screen { position: relative; display: flex; width: min(100%, 430px); min-height: 100vh; min-height: 100svh; flex-direction: column; align-items: center; overflow: hidden; margin: 0 auto; padding: max(25px, env(safe-area-inset-top)) 25px max(25px, env(safe-area-inset-bottom)); color: #27392f; background: #f7f8f2; font-family: "DM Sans", "Avenir Next", Avenir, sans-serif; }
+.auth-screen * { box-sizing: border-box; }
+.auth-screen button, .auth-screen input { font: inherit; }
+.auth-screen button { cursor: pointer; }
+.auth-screen a { color: inherit; text-decoration: none; }
+.auth-brand { z-index: 1; display: inline-flex; align-items: center; align-self: flex-start; gap: 9px; font-size: 19px; font-weight: 750; letter-spacing: -.6px; }
+.auth-screen .brand-mark { display: grid; width: 33px; height: 33px; place-items: center; border-radius: 11px; color: #4b7757; background: #e1ebdc; }
+.auth-illustration { position: relative; display: grid; width: 134px; height: 134px; flex: 0 0 134px; place-items: center; margin: 35px 0 14px; border-radius: 50%; background: #e8efdf; }
+.auth-illustration > span { z-index: 1; display: grid; width: 55px; height: 55px; place-items: center; border-radius: 50%; color: #b18d4e; background: #f4dca4; font-size: 37px; }
+.auth-illustration > i, .auth-illustration > b { position: absolute; right: -3px; bottom: 15px; width: 100px; height: 43px; border-radius: 50% 50% 35% 35%; background: #a5bb95; transform: rotate(-18deg); }
+.auth-illustration > b { right: auto; bottom: 2px; left: -7px; width: 114px; height: 37px; background: #d4e1c8; transform: rotate(17deg); }
+.auth-card { z-index: 1; width: 100%; padding: 23px 19px 17px; border: 1px solid #e7ebe2; border-radius: 17px; background: #fffefa; box-shadow: 0 9px 32px #5965480a; }
+.auth-card > .eyebrow { color: #849485; font-size: 9px; font-weight: 700; letter-spacing: 1.45px; }
+.auth-card h1 { margin: 9px 0 5px; font-family: Georgia, "Times New Roman", serif; font-size: 31px; font-weight: 500; letter-spacing: -1px; }
+.auth-card > p { margin-top: 0; margin-bottom: 18px; color: #7e8b7f; font-size: 11px; line-height: 1.55; }
+.auth-card > .auth-notice { margin: -7px 0 13px; padding: 9px 10px; border: 1px solid #e2eadd; border-radius: 8px; color: #607d62; background: #f0f5ec; font-size: 10px; }
+.auth-form { display: grid; gap: 11px; }
+.auth-form > label { display: grid; gap: 5px; color: #637466; font-size: 10px; font-weight: 650; }
+.auth-form > label > input, .auth-input { width: 100%; height: 49px; border: 0; border-radius: 10px; background: #fff url("/assets/figma/login-username.svg") center / 100% 100% no-repeat; }
+.auth-form > label > input { padding: 0 15px; outline: none; color: #364d3b; font-size: 12px; font-weight: 400; }
+.auth-input { display: flex; align-items: center; gap: 9px; padding: 0 13px; background-image: url("/assets/figma/login-password.svg"); }
+.auth-input > svg { flex: 0 0 auto; color: #829181; }
+.auth-input > input { width: 100%; min-width: 0; height: 100%; border: 0; outline: none; color: #364d3b; background: transparent; font-size: 12px; font-weight: 400; }
+.auth-form > label > input:focus, .auth-input:focus-within { box-shadow: 0 0 0 3px #e4eee0; }
+.auth-submit { display: flex; width: 100%; min-height: 46px; align-items: center; justify-content: space-between; margin-top: 5px; padding: 0 15px; border: 0; border-radius: 8px; color: #fff; background: #5c8060; font-size: 12px; font-weight: 650; box-shadow: 0 3px 8px #496c501c; }
+.auth-submit:hover { background: #466f4d; }
+.auth-submit:disabled { opacity: .65; cursor: wait; }
+.auth-submit span { margin-left: 9px; }
+.auth-error { margin: 0; color: #a6433d; font-size: 10px; line-height: 1.4; }
+.auth-card .auth-switch { margin: 14px 0 0; color: #7e8b7f; text-align: center; font-size: 10px; }
+.auth-switch button { padding: 0; border: 0; color: #4e7956; background: none; font-size: inherit; font-weight: 700; }
+.auth-whisper { margin: 17px 0 0; color: #9aa595; font: italic 11px Georgia, serif; }

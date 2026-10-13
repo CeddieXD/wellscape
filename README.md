@@ -1,6 +1,6 @@
 # Wellscape
 
-Wellscape is a mobile-only wellness and neighborhood-game prototype built with React, TypeScript, Tailwind CSS, KAPLAY, Colyseus, Node.js, SQLite/WASM, and IndexedDB. The interface is designed for phone screens; larger displays show the same centered mobile layout.
+Wellscape is a mobile-only wellness and neighborhood-game prototype built with HTML, CSS, JavaScript, KAPLAY, Colyseus, Node.js, SQLite/WASM, and IndexedDB. The interface is designed for phone screens; larger displays show the same centered mobile layout.
 
 ## Run locally
 
